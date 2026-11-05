@@ -31,3 +31,5 @@ yarn-error.log*
 /.angular/
 /coverage/
 /out-tsc/
+package-lock.json
+firebase/projfeang21-firebase-adminsdk-dotr0-b8b3a3ccde.json
