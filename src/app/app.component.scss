@@ -1,0 +1,241 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-shell {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.topbar {
+  position: relative;
+  z-index: 31;
+  display: flex;
+  height: 62px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  border-bottom: 1px solid #2d342d;
+  background: #141814;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.drawer-backdrop {
+  display: none;
+}
+
+.brand,
+.topbar__meta {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 11px;
+  color: #e7ebe3;
+  text-decoration: none;
+}
+
+.brand__seal {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  border: 1px solid #a68d50;
+  border-radius: 3px;
+  color: #dfbf72;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 11px;
+}
+
+.brand__name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 14px;
+}
+
+.topbar__meta {
+  gap: 8px;
+  color: #99a397;
+  font-size: 10px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #85b495;
+  box-shadow: 0 0 9px rgb(133 180 149 / 40%);
+}
+
+.workspace {
+  display: grid;
+  width: min(100%, 1600px);
+  height: calc(100vh - 62px);
+  height: calc(100dvh - 62px);
+  min-height: 0;
+  grid-template-columns: minmax(285px, 0.43fr) minmax(0, 1fr);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.roster-pane {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  flex-direction: column;
+  padding: 10px 22px 24px 30px;
+  overflow: hidden;
+  border-right: 1px solid #2d342d;
+  background: #141814;
+}
+
+.comparison-pane {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  flex-direction: column;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.selection-limit {
+  position: absolute;
+  right: 20px;
+  bottom: 7px;
+  left: 30px;
+  margin: 0;
+  color: #e1a275;
+  font-size: 10px;
+}
+
+@media (max-width: 900px) {
+  .workspace {
+    grid-template-columns: minmax(260px, 0.55fr) minmax(0, 1fr);
+  }
+
+  .roster-pane {
+    padding-right: 16px;
+    padding-left: 20px;
+  }
+
+  .comparison-pane {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    position: sticky;
+    top: 0;
+    height: 56px;
+    padding: 0 18px;
+  }
+
+  .menu-toggle {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 0;
+    border: 1px solid #394139;
+    border-radius: 4px;
+    background: #202620;
+    cursor: pointer;
+  }
+
+  .menu-toggle span {
+    width: 17px;
+    height: 2px;
+    border-radius: 1px;
+    background: #d9dfd5;
+  }
+
+  .brand {
+    margin-right: auto;
+    margin-left: 12px;
+  }
+
+  .drawer-backdrop {
+    position: fixed;
+    z-index: 29;
+    inset: 56px 0 0;
+    display: block;
+    width: 100%;
+    height: calc(100dvh - 56px);
+    padding: 0;
+    border: 0;
+    background: rgb(5 7 5 / 62%);
+  }
+
+  .workspace {
+    display: flex;
+    // height: auto;
+    min-height: calc(100dvh - 56px);
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .roster-pane {
+    position: fixed;
+    z-index: 30;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    width: min(88vw, 360px);
+    height: auto;
+    min-height: 0;
+    padding: 19px 18px 16px;
+    border-right: 1px solid #343a34;
+    border-bottom: 0;
+    box-shadow: 16px 0 40px rgb(0 0 0 / 28%);
+    transform: translateX(-105%);
+    transition: transform 180ms ease, visibility 180ms ease;
+    visibility: hidden;
+  }
+
+  .roster-pane--open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .comparison-pane {
+    display: block;
+    height: auto;
+    padding: 18px 35px;
+    overflow: visible;
+  }
+
+  .app-shell {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .selection-limit {
+    position: static;
+    margin: 5px 0 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .topbar__meta {
+    font-size: 9px;
+  }
+
+  .brand__name {
+    font-size: 13px;
+  }
+}

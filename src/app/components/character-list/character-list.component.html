@@ -1,0 +1,56 @@
+<section class="roster" aria-labelledby="roster-title">
+    <div class="roster__heading">
+        <div class="section-title">
+            <mat-icon>groups</mat-icon>
+            <p class="eyebrow">Characters</p>
+            <!-- <h2 id="roster-title">Roster</h2> -->
+        </div>
+        <span class="roster__count">{{ characters.length }} records</span>
+    </div>
+
+    <label class="search" for="character-search">
+        <span class="search__icon" aria-hidden="true">⌕</span>
+        <input id="character-search" type="search" placeholder="Find a character" [value]="searchTerm"
+            (input)="searchTermChange.emit($any($event.target).value)" />
+        <kbd>/</kbd>
+    </label>
+
+    <div class="roster__list" aria-label="Character list">
+        @for (character of characters; track character.id) {
+        <article class="character-row" [style.--character-color]="colorFor(character.id)"
+            (click)="editCharacter.emit(character)">
+            <div class="avatar-control">
+                <button class="avatar" type="button" [attr.aria-label]="'Edit ' + character.nameEnglish"
+                    (click)="$event.stopPropagation(); editCharacter.emit(character)">
+                    @if (character.portrait && !unavailableImages.has(character.id)) {
+                    <img [src]="imageFor(character.portrait)" [alt]="character.nameEnglish" loading="lazy"
+                        (error)="markImageUnavailable(character.id)" />
+                    } @else {
+                    <span class="avatar__fallback" aria-hidden="true">
+                        {{ character.nameEnglish.slice(0, 1) || '?' }}
+                    </span>
+                    }
+                </button>
+            </div>
+
+            <div class="character-row__identity">
+                <h3>{{ character.nameEnglish }}</h3>
+                <p>{{ character.nameJapanese || 'Japanese name unavailable' }}</p>
+                <span>{{ character.countryName }}</span>
+            </div>
+
+            <button class="select-toggle" type="button" [class.select-toggle--selected]="isSelected(character.id)"
+                [attr.aria-label]="
+                            isSelected(character.id)
+                                ? 'Remove ' + character.nameEnglish + ' from comparison'
+                                : 'Add ' + character.nameEnglish + ' to comparison'
+                        " [attr.aria-pressed]="isSelected(character.id)"
+                (click)="$event.stopPropagation(); toggleSelection.emit(character.id)">
+                {{ isSelected(character.id) ? '−' : '+' }}
+            </button>
+        </article>
+        } @empty {
+        <p class="roster__empty">No character records are available.</p>
+        }
+    </div>
+</section>

@@ -1,0 +1,70 @@
+<div class="app-shell">
+  <header class="topbar">
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-controls="character-roster"
+      [attr.aria-expanded]="rosterOpen"
+      [attr.aria-label]="rosterOpen ? 'Close character list' : 'Open character list'"
+      (click)="toggleRoster()"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a class="brand" href="/" aria-label="SF3 Character Archive home">
+      <span class="brand__seal" aria-hidden="true">SF3</span>
+      <span class="brand__name">Character Archive</span>
+    </a>
+    <div class="topbar__meta">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>Spectral Force 3 - PS1</span>
+    </div>
+  </header>
+
+  @if (rosterOpen) {
+    <button
+      class="drawer-backdrop"
+      type="button"
+      aria-label="Close character list"
+      (click)="closeRoster()"
+    ></button>
+  }
+
+  <main class="workspace">
+    <aside
+      id="character-roster"
+      class="roster-pane"
+      [class.roster-pane--open]="rosterOpen"
+      aria-label="Character roster"
+    >
+      <sf3-character-list
+        [characters]="characterService.visibleCharacters()"
+        [selectedIds]="characterService.selectedIds()"
+        [searchTerm]="characterService.searchTerm()"
+        (searchTermChange)="characterService.searchTerm.set($event)"
+        (editCharacter)="openEditor($event)"
+        (toggleSelection)="toggleSelection($event)"
+      />
+      @if (selectionLimitReached) {
+        <p class="selection-limit" role="status">Choose up to five characters.</p>
+      }
+    </aside>
+
+    <section class="comparison-pane" aria-label="Character comparison">
+      <sf3-comparison-panel
+        [characters]="characterService.selectedCharacters()"
+        (removeCharacter)="characterService.removeSelection($event)"
+        (openCharacterList)="openRoster()"
+      />
+    </section>
+  </main>
+
+  @if (editingCharacter; as character) {
+    <sf3-character-editor
+      [character]="character"
+      (saveCharacter)="saveCharacter($event)"
+      (closeEditor)="editingCharacter = null"
+    />
+  }
+</div>

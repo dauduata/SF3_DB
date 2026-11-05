@@ -1,0 +1,75 @@
+<section class="comparison" aria-labelledby="comparison-title">
+  <!-- <div class="comparison__heading">
+    <span class="comparison__count">{{ characters.length }} / 5 selected</span>
+  </div> -->
+
+  @if (characters.length > 0) {
+  <div class="selected-strip" aria-label="Selected characters">
+    @for (character of characters; track character.id; let selectionOrder = $index) {
+    <article class="selected-character" [style.--character-color]="colorFor(selectionOrder)">
+      <div class="selected-character__avatar">
+        @if (character.portrait && !unavailableImages.has(character.id)) {
+        <img [src]="imageFor(character.portrait)" [alt]="character.nameEnglish"
+          (error)="markImageUnavailable(character.id)" />
+        } @else {
+        <span aria-hidden="true">{{ character.nameEnglish.slice(0, 1) || '?' }}</span>
+        }
+      </div>
+      <div class="selected-character__identity">
+        <h3>{{ character.nameEnglish }}</h3>
+        <span>{{ character.nameJapanese || 'Name unavailable' }}</span>
+      </div>
+      <span class="selected-character__swatch" aria-hidden="true"></span>
+      <button class="selected-character__remove" type="button"
+        [attr.aria-label]="'Remove ' + character.nameEnglish + ' from comparison'"
+        (click)="removeCharacter.emit(character.id)">
+        ×
+      </button>
+    </article>
+    }
+  </div>
+
+  <!-- <div class="scale-note" aria-label="Shared scale from 0 to 10">
+      <span>Attribute profile</span>
+      <div class="scale-note__labels"><span>0</span><span>10</span></div>
+    </div> -->
+
+  <div class="stat-list" [style.--selected-count]="characters.length" [style.--row-gap.px]="rowGap">
+    @for (stat of stats; track stat.key) {
+    <section class="stat-group" [attr.aria-label]="stat.code + ' ' + stat.label">
+      <div class="stat-group__heading">
+        <mat-icon [class]="'stat-' + stat.key">
+          {{ stat.icon }}
+        </mat-icon>
+        <h3>{{ stat.label }}</h3>
+      </div>
+      <div class="stat-group__rows">
+        @for (character of characters; track character.id; let selectionOrder = $index) {
+        <div class="stat-row" [style.--character-color]="colorFor(selectionOrder)">
+          <span class="stat-row__name">{{ character.nameEnglish }}</span>
+          <div class="stat-row__track" role="meter" [attr.aria-label]="character.nameEnglish + ' ' + stat.label"
+            aria-valuemin="0" aria-valuemax="10" [attr.aria-valuenow]="character.stats[stat.key]">
+            @for (segment of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track segment; let i = $index) {
+            <span
+              class="stat-row__segment"
+              [class.stat-row__segment--active]="i < character.stats[stat.key]"
+              aria-hidden="true"
+            ></span>
+            }
+          </div>
+          <strong class="stat-row__value">{{ character.stats[stat.key] }}</strong>
+        </div>
+        }
+      </div>
+    </section>
+    }
+  </div>
+  } @else {
+  <button class="empty-state" type="button" (click)="openCharacterList.emit()">
+    <div class="empty-state__symbol" aria-hidden="true">＋</div>
+    <p class="eyebrow">Build your lineup</p>
+    <h3>No characters selected</h3>
+    <p>Choose up to five portraits from the roster to compare their attributes.</p>
+  </button>
+  }
+</section>
